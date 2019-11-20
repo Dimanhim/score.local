@@ -1,5 +1,5 @@
 $(document).ready(function() {
-    $('#costs-costs_default').on('change', function() {
+    $('.changeble-default select').on('change', function() {
         if($(this).val() != 0) {
             $('.costs-name').fadeOut();
             $('.costs-category').fadeOut();

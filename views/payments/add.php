@@ -8,8 +8,7 @@ use yii\helpers\Html;
 use yii\bootstrap\ActiveForm;
 use yii\captcha\Captcha;
 
-$this->title = 'Счета';
-if($score->is_check == 1) $text = ['checked' => true];
+$this->title = 'Добавить платеж';
 ?>
 <div class="col-md-6 col-md-offset-3" style="height: 40px; margin-top: 10px">
     <?php if( Yii::$app->session->hasFlash('success') ): ?>
@@ -21,9 +20,6 @@ if($score->is_check == 1) $text = ['checked' => true];
     <?php $form = ActiveForm::begin(['fieldConfig' => ['options' => ['tag' => false]]]) ?>
     <?= $form->field($model, 'name')->textInput() ?>
     <?= $form->field($model, 'summa')->textInput() ?>
-    <?= $form->field($model, 'id_default')->checkbox() ?>
-    <?= $form->field($model, 'description')->textarea() ?>
-    <?= $form->field($model, 'is_check')->checkbox($text) ?>
     <?= Html::submitButton('Создать', ['class' => "btn btn-primary"]) ?>
     <?php ActiveForm::end() ?>
 </div>

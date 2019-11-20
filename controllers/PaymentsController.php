@@ -10,12 +10,13 @@ use yii\filters\VerbFilter;
 use app\models\LoginForm;
 use app\models\ContactForm;
 use app\models\Scores;
+use app\models\Payments;
 use app\models\Categories;
 use app\models\Costs;
 use app\models\CostsDefault;
 use app\models\IncomesDefault;
 
-class SiteController extends Controller
+class PaymentsController extends Controller
 {
     /**
      * {@inheritdoc}
@@ -66,78 +67,59 @@ class SiteController extends Controller
      */
     public function actionIndex()
     {
-        $summa = [];
-        $scores = Scores::find()->all();
-        $cats = Categories::find()->orderBy('source ASC')->all();
-        foreach($cats as $cat) {
-            $costs = Costs::find()->where(['category' => $cat->id])->all();
-        }
+        $scores = Payments::find()->all();
         return $this->render('index', [
-            'summa' => $summa,
             'scores' => $scores,
-            'cats' => $cats,
         ]);
     }
-
-    /**
-     * Login action.
-     *
-     * @return Response|string
-     */
-    public function actionLogin()
+    public function actionAdd()
     {
-        if (!Yii::$app->user->isGuest) {
-            return $this->goHome();
+        $model = new Payments();
+        if($model->load(Yii::$app->request->post())) {
+            if($model->save()) {
+                Yii::$app->session->setFlash('success', "Платеж успешно добавлен!");
+                return $this->redirect('index');
+            }
         }
-
-        $model = new LoginForm();
-        if ($model->load(Yii::$app->request->post()) && $model->login()) {
-            return $this->goBack();
+        return $this->render('add', [
+            'model' => $model,
+        ]);
+    }
+    public function actionView($id)
+    {
+        $model = Payments::findOne($id);
+        return $this->render('view', [
+            'model' => $model,
+        ]);
+    }
+    public function actionEdit($id)
+    {
+        $model = Payments::findOne($id);
+        if($model->load(Yii::$app->request->post())) {
+            if($model->save()) {
+                Yii::$app->session->setFlash('success', "Платеж успешно отредактирован!");
+                return $this->redirect('index');
+            }
         }
-
-        $model->password = '';
-        return $this->render('login', [
+        $score = Save::findOne($id);
+        return $this->render('edit', [
+            'model' => $model,
+            'score' => $score,
+        ]);
+    }
+    public function actionDelete($id)
+    {
+        $model = Payments::findOne($id);
+        if($model->delete()) {
+            Yii::$app->session->setFlash('success', "Платеж успешно удален!");
+            return $this->redirect('index');
+        }
+        return $this->render('view', [
             'model' => $model,
         ]);
     }
 
-    /**
-     * Logout action.
-     *
-     * @return Response
-     */
-    public function actionLogout()
-    {
-        Yii::$app->user->logout();
 
-        return $this->goHome();
-    }
 
-    /**
-     * Displays contact page.
-     *
-     * @return Response|string
-     */
-    public function actionContact()
-    {
-        $model = new ContactForm();
-        if ($model->load(Yii::$app->request->post()) && $model->contact(Yii::$app->params['adminEmail'])) {
-            Yii::$app->session->setFlash('contactFormSubmitted');
-
-            return $this->refresh();
-        }
-        return $this->render('contact', [
-            'model' => $model,
-        ]);
-    }
-
-    /**
-     * Displays about page.
-     *
-     * @return string
-     */
-    public function actionAbout()
-    {
-        return $this->render('about');
-    }
 }
+

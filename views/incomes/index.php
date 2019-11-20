@@ -12,7 +12,7 @@ use yii\bootstrap\ActiveForm;
 use yii\captcha\Captcha;
 use yii\web\View;
 
-$this->title = 'Список расходов';
+$this->title = 'Список доходов';
 $count = 1;
 $summ = 0
 ?>
@@ -26,14 +26,14 @@ $summ = 0
             <th>Сумма</th>
             <th>Название</th>
             <th>Категория</th>
-            <th>Со счета</th>
+            <th>На счет</th>
             <th>Дата</th>
             <th>Действия</th>
         </tr>
         <?php foreach($model as $m) { ?>
         <tr>
             <td width="20"><?= $count ?></td>
-            <td><b><?= $m->cost ?></b></td>
+            <td><b><?= $m->income ?></b></td>
             <td><?= $m->name ?></td>
             <td>
                 <a href="<?= Yii::$app->urlManager->createUrl(['cats/view', 'id' => $m->category]) ?>"><?= Categories::getCategoryName($m->category) ?></a>
@@ -42,11 +42,11 @@ $summ = 0
             <td><?= Scores::getScoreName($m->score) ?></td>
             <td><?= date('d-m-Y', $m->date) ?></td>
             <td>
-                <a href="<?= Yii::$app->urlManager->createUrl(['costs/edit?id='.$m->id]) ?>"><span class="glyphicon glyphicon-edit"></span></a>
-                <a href="<?= Yii::$app->urlManager->createUrl(['costs/delete?id='.$m->id]) ?>" class="delete"><span class="glyphicon glyphicon-remove"></span></a>
+                <a href="<?= Yii::$app->urlManager->createUrl(['incomes/edit?id='.$m->id]) ?>"><span class="glyphicon glyphicon-edit"></span></a>
+                <a href="<?= Yii::$app->urlManager->createUrl(['incomes/delete?id='.$m->id]) ?>" class="delete"><span class="glyphicon glyphicon-remove"></span></a>
             </td>
         </tr>
-        <?php $summ = $summ + $m->cost ?>
+        <?php $summ = $summ + $m->income ?>
         <?php $count++ ?>
         <?php } ?>
         <tr style="font-weight: bold">
@@ -55,7 +55,7 @@ $summ = 0
             <td colspan="4"></td>
         </tr>
         <tr>
-            <td><a href="<?= Yii::$app->urlManager->createUrl(['costs/add']) ?>" class="btn btn-primary">Добавить расход</a></td>
+            <td><a href="<?= Yii::$app->urlManager->createUrl(['incomes/add']) ?>" class="btn btn-primary">Добавить доход</a></td>
             <td colspan="2"></td>
         </tr>
     </table>

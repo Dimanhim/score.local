@@ -14,8 +14,9 @@ use app\models\Categories;
 use app\models\Costs;
 use app\models\CostsDefault;
 use app\models\IncomesDefault;
+use app\models\Incomes;
 
-class CostsController extends Controller
+class IncomesController extends Controller
 {
     /**
      * {@inheritdoc}
@@ -69,24 +70,24 @@ class CostsController extends Controller
     //------------------------------------- РАСХОДЫ
     public function actionIndex()
     {
-        $model = Costs::find()->all();
+        $model = Incomes::find()->all();
         return $this->render('index', [
             'model' => $model,
         ]);
     }
     public function actionAdd()
     {
-        $model = new Costs();
+        $model = new Incomes();
         if($model->load(Yii::$app->request->post())) {
             $model->date = time();
-            if($model->costs_default != 0) {
-                $model->name = CostsDefault::findOne($model->costs_default)->name;
-                $model->category = CostsDefault::findOne($model->costs_default)->category;
+            if($model->income_default != null) {
+                $model->name = IncomesDefault::findOne($model->income_default)->name;
+                $model->category = IncomesDefault::findOne($model->income_default)->category;
             }
-            else $model->costs_default = 0;
+            else $model->income_default = 0;
             if($model->save()) {
-                if(Scores::changeScore('-'.$model->cost, $model->score)) {
-                    Yii::$app->session->setFlash('success', "Расход успешно добавлен!");
+                if(Scores::changeScore($model->income, $model->score)) {
+                    Yii::$app->session->setFlash('success', "Доход успешно добавлен!");
                     return $this->redirect('index');
                 }
                 else {
@@ -101,10 +102,10 @@ class CostsController extends Controller
     }
     public function actionEdit($id)
     {
-        $model = Costs::findOne($id);
+        $model = Incomes::findOne($id);
         if($model->load(Yii::$app->request->post())) {
             if($model->save()) {
-                Yii::$app->session->setFlash('success', "Расход успешно отредактирован!");
+                Yii::$app->session->setFlash('success', "Доход успешно отредактирован!");
                 return $this->redirect('index');
             }
             else {
@@ -112,7 +113,7 @@ class CostsController extends Controller
                 return $this->redirect('index');
             }
         }
-        $costs = Costs::findOne($id);
+        $costs = Incomes::findOne($id);
         return $this->render('edit', [
             'model' => $model,
             'costs' => $costs,
@@ -120,9 +121,9 @@ class CostsController extends Controller
     }
     public function actionDelete($id)
     {
-        $model = Costs::findOne($id);
+        $model = Incomes::findOne($id);
         if($model->delete()) {
-            Yii::$app->session->setFlash('success', "Расход успешно удален!");
+            Yii::$app->session->setFlash('success', "Доход успешно удален!");
             return $this->redirect('index');
         }
         else {

@@ -4,15 +4,18 @@
 /* @var $form yii\bootstrap\ActiveForm */
 /* @var $model app\models\ContactForm */
 
-use app\models\Categories;
 use app\models\ContactForm;
+use app\models\Categories;
 use app\models\Scores;
+use app\models\CostsDefault;
+use app\models\IncomesDefault;
 use yii\helpers\Html;
 use yii\bootstrap\ActiveForm;
 use yii\captcha\Captcha;
 use yii\web\View;
 
-$this->title = 'Редактировать расход';
+$this->title = 'Добавление дохода';
+$text = [];
 ?>
 <div class="col-md-6 col-md-offset-3" style="height: 40px; margin-top: 10px">
     <?php if( Yii::$app->session->hasFlash('success') ): ?>
@@ -22,44 +25,47 @@ $this->title = 'Редактировать расход';
 
 <div class="col-md-6 col-md-offset-3">
     <?php $form = ActiveForm::begin(['fieldConfig' => ['options' => ['tag' => false]]]) ?>
-    <?= $form->field($model, 'name')->textInput(['value' => $costs->name]) ?>
+    <div class="changeble-default">
+        <?php
+        $items = [];
+        foreach(IncomesDefault::find()->all() as $def) {
+            $items[$def->id] = $def->name;
+        }
+        $params = [
+            'prompt' => 'Выбрать...',
+        ];
+        ?>
+        <?= $form->field($model, 'income_default')->dropdownList($items, $params) ?>
+    </div>
+
+    <div class="costs-name">
+        <?= $form->field($model, 'name')->textInput() ?>
+    </div>
     <?php
     $items = [];
-    foreach(Categories::find()->all() as $cat) {
+    foreach(Categories::find()->where(['source' => 1])->all() as $cat) {
         $items[$cat->id] = $cat->name;
     }
     $params = [
-        'options' =>[
-            $model->category => ['Selected' => true]
-        ],
-        'prompt' => 'Выбрать...'
-    ];
+        'prompt' => 'Выбрать...'];
     ?>
-
-    <?= $form->field($model, 'category')->dropdownList($items, $params) ?>
-    <?= $form->field($model, 'cost')->textInput(['value' => $costs->cost]) ?>
-
+    <div class="costs-category">
+        <?= $form->field($model, 'category')->dropdownList($items, $params) ?>
+    </div>
+    <?= $form->field($model, 'income')->textInput() ?>
     <?php
     $items = [];
     foreach(Scores::find()->all() as $score) {
         $items[$score->id] = $score->name;
     }
     $params = [
-        'options' =>[
-            $costs->score => ['Selected' => true],
-        ],
-        'prompt' => 'Выбрать...',
+        $score->id_default => ['Selected' => true]
     ];
     ?>
     <?= $form->field($model, 'score')->dropdownList($items, $params) ?>
-
-    <?= Html::submitButton('Сохранить', ['class' => "btn btn-primary"]) ?>
-
-    <br />
-    <?= Html::a('Вернуться к списку расходов', Yii::$app->urlManager->createUrl(['costs/index']), ['class' => "btn btn-default", 'style' => 'margin-top: 10px']) ?>
+    <?= Html::submitButton('Добавить', ['class' => "btn btn-primary"]) ?>
     <?php ActiveForm::end() ?>
 </div>
-
 
 
 

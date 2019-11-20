@@ -11,7 +11,7 @@ class Incomes extends ActiveRecord
         return [
             [['income'], 'required'],
             [['name'], 'string'],
-            [['id', 'category', 'income_default', 'date'], 'integer'],
+            [['id', 'category', 'income_default', 'score', 'date'], 'integer'],
         ];
     }
     public function attributeLabels()
@@ -21,6 +21,7 @@ class Incomes extends ActiveRecord
             'income' => 'Сумма',
             'income_default' => 'Название по умолчанию',
             'category' => 'Категория',
+            'score' => 'Добавить на счет',
             'date' => 'Дата',
         ];
     }

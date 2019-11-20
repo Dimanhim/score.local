@@ -13,7 +13,7 @@ use yii\bootstrap\ActiveForm;
 use yii\captcha\Captcha;
 use yii\web\View;
 
-$this->title = 'Расход';
+$this->title = 'Добавление расхода';
 ?>
 <div class="col-md-6 col-md-offset-3" style="height: 40px; margin-top: 10px">
     <?php if( Yii::$app->session->hasFlash('success') ): ?>
@@ -23,22 +23,24 @@ $this->title = 'Расход';
 
 <div class="col-md-6 col-md-offset-3">
     <?php $form = ActiveForm::begin(['fieldConfig' => ['options' => ['tag' => false]]]) ?>
+    <div class="changeble-default">
+        <?php
+        $items = [];
+        foreach(CostsDefault::find()->all() as $def) {
+            $items[$def->id] = $def->name;
+        }
+        $params = [
+            'prompt' => 'Выбрать...'];
+        ?>
+        <?= $form->field($model, 'costs_default')->dropdownList($items, $params) ?>
+    </div>
 
-    <?php
-    $items = [];
-    foreach(CostsDefault::find()->all() as $def) {
-        $items[$def->id] = $def->name;
-    }
-    $params = [
-        'prompt' => 'Выбрать...'];
-    ?>
-    <?= $form->field($model, 'costs_default')->dropdownList($items, $params) ?>
     <div class="costs-name">
         <?= $form->field($model, 'name')->textInput() ?>
     </div>
     <?php
     $items = [];
-    foreach(Categories::find()->all() as $cat) {
+    foreach(Categories::find()->where(['source' => 0])->all() as $cat) {
         $items[$cat->id] = $cat->name;
     }
     $params = [

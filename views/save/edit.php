@@ -10,7 +10,7 @@ use yii\bootstrap\ActiveForm;
 use yii\captcha\Captcha;
 use yii\web\View;
 
-$this->title = 'Счета';
+$this->title = 'Редактировать копилку';
 $text = [];
 if($score->id_default == 1) $text = ['checked' => true];
 if($score->is_check == 1) $text_2 = ['checked' => true];
@@ -25,12 +25,9 @@ if($score->is_check == 1) $text_2 = ['checked' => true];
     <?php $form = ActiveForm::begin(['fieldConfig' => ['options' => ['tag' => false]]]) ?>
     <?= $form->field($model, 'name')->textInput(['value' => $score->name]) ?>
     <?= $form->field($model, 'summa')->textInput(['value' => $score->summa]) ?>
-    <?= $form->field($model, 'id_default')->checkbox($text) ?>
-    <?= $form->field($model, 'description')->textarea(['value' => $score->description]) ?>
-    <?= $form->field($model, 'is_check')->checkbox($text_2) ?>
     <?= Html::submitButton('Сохранить', ['class' => "btn btn-primary"]) ?>
     <br />
-    <?= Html::a('Вернуться к списку счетов', Yii::$app->urlManager->createUrl(['scores/index']), ['class' => "btn btn-default", 'style' => 'margin-top: 10px']) ?>
+    <?= Html::a('Вернуться в копилку', Yii::$app->urlManager->createUrl(['save/index']), ['class' => "btn btn-default", 'style' => 'margin-top: 10px']) ?>
     <?php ActiveForm::end() ?>
 </div>
 

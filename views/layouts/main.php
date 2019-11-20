@@ -30,18 +30,33 @@ AppAsset::register($this);
 <div class="wrap">
     <div class="container">
             <div class="row">
-                <ul class="nav nav-tabs">
-                    <li<?php if($activePage == 'site') { ?> class="active"<?php } ?>><a href="<?= Yii::$app->urlManager->createUrl(['site/index']) ?>">Главная</a></li>
-                    <li<?php if($activePage == 'scores') { ?> class="active"<?php } ?>><a href="<?= Yii::$app->urlManager->createUrl(['scores/index']) ?>">Мои счета</a></li>
-                    <li<?php if($activePage == 'cats') { ?> class="active"<?php } ?>><a href="<?= Yii::$app->urlManager->createUrl(['cats/index']) ?>">Категории</a></li>
-                    <li<?php if($activePage == 'costs') { ?> class="active"<?php } ?>><a href="<?= Yii::$app->urlManager->createUrl(['costs/index']) ?>">Расходы</a></li>
-                    <li<?php if($activePage == 'incomes') { ?> class="active"<?php } ?>><a href="<?= Yii::$app->urlManager->createUrl(['incomes/index']) ?>">Доходы</a></li>
-                    <li<?php if($activePage == 'costs-default') { ?> class="active"<?php } ?>><a href="<?= Yii::$app->urlManager->createUrl(['costs-default/index']) ?>">Расходы по умолчанию</a></li>
-                    <li<?php if($activePage == 'incomes-default') { ?> class="active"<?php } ?>><a href="<?= Yii::$app->urlManager->createUrl(['incomes-default/index']) ?>">Доходы по умолчанию</a></li>
-                </ul>
+                <div class="col-md-3">
+                    <ul class="nav">
+                        <li><a href="<?= Yii::$app->urlManager->createUrl(['costs/add']) ?>" class="btn btn-success add-score">Добавить расход</a></li>
+                        <li><a href="<?= Yii::$app->urlManager->createUrl(['incomes/add']) ?>" class="btn btn-primary">Добавить Доход</a></li>
+                        <li<?php if($activePage == 'cats') { ?> class="active"<?php } ?>><a href="<?= Yii::$app->urlManager->createUrl(['cats/index']) ?>">Категории</a></li>
+                        <li<?php if($activePage == 'costs-default') { ?> class="active"<?php } ?>><a href="<?= Yii::$app->urlManager->createUrl(['costs-default/index']) ?>">Расходы по умолчанию</a></li>
+                        <li<?php if($activePage == 'incomes-default') { ?> class="active"<?php } ?>><a href="<?= Yii::$app->urlManager->createUrl(['incomes-default/index']) ?>">Доходы по умолчанию</a></li>
+                        <li<?php if($activePage == 'payments') { ?> class="active"<?php } ?>><a href="<?= Yii::$app->urlManager->createUrl(['payments/index']) ?>">Обязательные платежи</a></li>
+                        <li<?php if($activePage == 'payments') { ?> class="active"<?php } ?>><a href="<?= Yii::$app->urlManager->createUrl(['save/index']) ?>">Копилка</a></li>
+                    </ul>
+                </div>
+                <div class="col-md-9">
+                    <ul class="nav nav-tabs">
+                        <li<?php if($activePage == 'site') { ?> class="active"<?php } ?>><a href="<?= Yii::$app->urlManager->createUrl(['site/index']) ?>">Главная</a></li>
+                        <li<?php if($activePage == 'scores') { ?> class="active"<?php } ?>><a href="<?= Yii::$app->urlManager->createUrl(['scores/index']) ?>">Мои счета</a></li>
+
+                        <li<?php if($activePage == 'costs') { ?> class="active"<?php } ?>><a href="<?= Yii::$app->urlManager->createUrl(['costs/index']) ?>">Расходы</a></li>
+                        <li<?php if($activePage == 'incomes') { ?> class="active"<?php } ?>><a href="<?= Yii::$app->urlManager->createUrl(['incomes/index']) ?>">Доходы</a></li>
+
+                        <li<?php if($activePage == 'costs-default') { ?> class="active"<?php } ?>><a href="<?= Yii::$app->urlManager->createUrl(['transfer/add']) ?>">Переводы</a></li>
+                    </ul>
+                    <?= $content ?>
+                </div>
+
             </div>
 
-        <?= $content ?>
+
     </div>
 </div>
 

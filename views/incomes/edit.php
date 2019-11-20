@@ -12,7 +12,7 @@ use yii\bootstrap\ActiveForm;
 use yii\captcha\Captcha;
 use yii\web\View;
 
-$this->title = 'Редактировать расход';
+$this->title = 'Редактирование дохода';
 ?>
 <div class="col-md-6 col-md-offset-3" style="height: 40px; margin-top: 10px">
     <?php if( Yii::$app->session->hasFlash('success') ): ?>
@@ -37,7 +37,7 @@ $this->title = 'Редактировать расход';
     ?>
 
     <?= $form->field($model, 'category')->dropdownList($items, $params) ?>
-    <?= $form->field($model, 'cost')->textInput(['value' => $costs->cost]) ?>
+    <?= $form->field($model, 'income')->textInput(['value' => $costs->income]) ?>
 
     <?php
     $items = [];
@@ -56,7 +56,7 @@ $this->title = 'Редактировать расход';
     <?= Html::submitButton('Сохранить', ['class' => "btn btn-primary"]) ?>
 
     <br />
-    <?= Html::a('Вернуться к списку расходов', Yii::$app->urlManager->createUrl(['costs/index']), ['class' => "btn btn-default", 'style' => 'margin-top: 10px']) ?>
+    <?= Html::a('Вернуться к списку доходов', Yii::$app->urlManager->createUrl(['incomes/index']), ['class' => "btn btn-default", 'style' => 'margin-top: 10px']) ?>
     <?php ActiveForm::end() ?>
 </div>
 

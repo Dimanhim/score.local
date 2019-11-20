@@ -14,8 +14,9 @@ use app\models\Categories;
 use app\models\Costs;
 use app\models\CostsDefault;
 use app\models\IncomesDefault;
+use app\models\Transfer;
 
-class CostsController extends Controller
+class TransferController extends Controller
 {
     /**
      * {@inheritdoc}
@@ -64,72 +65,74 @@ class CostsController extends Controller
      *
      * @return string
      */
-
-
-    //------------------------------------- РАСХОДЫ
-    public function actionIndex()
-    {
-        $model = Costs::find()->all();
-        return $this->render('index', [
-            'model' => $model,
-        ]);
-    }
     public function actionAdd()
     {
-        $model = new Costs();
+        $model = new Transfer();
+
         if($model->load(Yii::$app->request->post())) {
-            $model->date = time();
-            if($model->costs_default != 0) {
-                $model->name = CostsDefault::findOne($model->costs_default)->name;
-                $model->category = CostsDefault::findOne($model->costs_default)->category;
-            }
-            else $model->costs_default = 0;
-            if($model->save()) {
-                if(Scores::changeScore('-'.$model->cost, $model->score)) {
-                    Yii::$app->session->setFlash('success', "Расход успешно добавлен!");
-                    return $this->redirect('index');
-                }
-                else {
-                    Yii::$app->session->setFlash('error', "Произошла ошибка сохранения!");
-                    return $this->redirect('index');
-                }
+            $score_out = Scores::findOne($model->transfer_out);
+            $price_out = $score_out->summa;
+            $score_in = Scores::findOne($model->transfer_in);
+            $price_in = $score_in->summa;
+
+            $score_out->summa = $price_out - $model->summa;
+            $score_in->summa = $price_in + $model->summa;
+            if($score_out->save() && $score_in->save()) {
+                Yii::$app->session->setFlash('success', "Перевод успешно выполнен!");
+                return $this->redirect('add');
             }
         }
         return $this->render('add', [
             'model' => $model,
         ]);
     }
-    public function actionEdit($id)
+    /*public function actionAdd()
     {
-        $model = Costs::findOne($id);
+        $model = new Scores();
         if($model->load(Yii::$app->request->post())) {
             if($model->save()) {
-                Yii::$app->session->setFlash('success', "Расход успешно отредактирован!");
-                return $this->redirect('index');
-            }
-            else {
-                Yii::$app->session->setFlash('error', "Произошла ошибка сохранения!");
+                Yii::$app->session->setFlash('success', "Счет успешно добавлен!");
                 return $this->redirect('index');
             }
         }
-        $costs = Costs::findOne($id);
+        return $this->render('add', [
+            'model' => $model,
+        ]);
+    }*/
+    public function actionView($id)
+    {
+        $model = Scores::findOne($id);
+        return $this->render('view', [
+            'model' => $model,
+        ]);
+    }
+    public function actionEdit($id)
+    {
+        $model = Scores::findOne($id);
+        if($model->load(Yii::$app->request->post())) {
+            if($model->save()) {
+                Yii::$app->session->setFlash('success', "Счет успешно отредактирован!");
+                return $this->redirect('index');
+            }
+        }
+        $score = Scores::findOne($id);
         return $this->render('edit', [
             'model' => $model,
-            'costs' => $costs,
+            'score' => $score,
         ]);
     }
     public function actionDelete($id)
     {
-        $model = Costs::findOne($id);
+        $model = Scores::findOne($id);
         if($model->delete()) {
-            Yii::$app->session->setFlash('success', "Расход успешно удален!");
+            Yii::$app->session->setFlash('success', "Счет успешно удален!");
             return $this->redirect('index');
         }
-        else {
-            Yii::$app->session->setFlash('error', "Произошла ошибка удаления!");
-            return $this->redirect('index');
-        }
+        return $this->render('view', [
+            'model' => $model,
+        ]);
     }
+
 
 
     /**
