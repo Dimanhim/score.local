@@ -1,9 +1,9 @@
 <?php
 
 namespace app\models;
-use Yii;
-use app\models\Save;
 use app\models\Payments;
+use app\models\Save;
+use Yii;
 use yii\db\ActiveRecord;
 
 class Scores extends ActiveRecord
@@ -60,5 +60,15 @@ class Scores extends ActiveRecord
             $count += $v->summa;
         }
         return $summa - $count;
+    }
+    public function getScore($id, $default = 0)
+    {
+        return $id;
+    }
+    public function getTimeBeginMonth()
+    {
+        $month = date('m');
+        $year = date('Y');
+        return mktime(0,0,0, $month,1,$year);
     }
 }

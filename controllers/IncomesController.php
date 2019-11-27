@@ -15,6 +15,7 @@ use app\models\Costs;
 use app\models\CostsDefault;
 use app\models\IncomesDefault;
 use app\models\Incomes;
+use yii\data\Pagination;
 
 class IncomesController extends Controller
 {
@@ -70,9 +71,20 @@ class IncomesController extends Controller
     //------------------------------------- РАСХОДЫ
     public function actionIndex()
     {
-        $model = Incomes::find()->all();
+        $model = Incomes::find()->orderBy('date DESC');
+
+        // Пагинация
+        $pagination = new Pagination(
+            [
+                'defaultPageSize' => 10,
+                'totalCount' => $model->count(),
+            ]
+        );
+        $model = $model->offset($pagination->offset)->limit($pagination->limit)->all();
+
         return $this->render('index', [
             'model' => $model,
+            'pagination' => $pagination,
         ]);
     }
     public function actionAdd()

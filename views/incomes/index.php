@@ -11,6 +11,7 @@ use yii\helpers\Html;
 use yii\bootstrap\ActiveForm;
 use yii\captcha\Captcha;
 use yii\web\View;
+use yii\widgets\LinkPager;
 
 $this->title = 'Список доходов';
 $count = 1;
@@ -59,6 +60,7 @@ $summ = 0
             <td colspan="2"></td>
         </tr>
     </table>
+    <?= LinkPager::widget(['pagination' => $pagination])  ?>
 </div>
 
 

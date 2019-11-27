@@ -14,6 +14,7 @@ use app\models\Categories;
 use app\models\Costs;
 use app\models\CostsDefault;
 use app\models\IncomesDefault;
+use yii\data\Pagination;
 
 class CostsController extends Controller
 {
@@ -69,9 +70,20 @@ class CostsController extends Controller
     //------------------------------------- РАСХОДЫ
     public function actionIndex()
     {
-        $model = Costs::find()->all();
+        $model = Costs::find()->orderBy('date DESC')->where('date' > Scores::getTimeBeginMonth());
+
+        // Пагинация
+        $pagination = new Pagination(
+            [
+                'defaultPageSize' => 10,
+                'totalCount' => $model->count(),
+            ]
+        );
+        $model = $model->offset($pagination->offset)->limit($pagination->limit)->all();
+
         return $this->render('index', [
             'model' => $model,
+            'pagination' => $pagination,
         ]);
     }
     public function actionAdd()
@@ -84,6 +96,8 @@ class CostsController extends Controller
                 $model->category = CostsDefault::findOne($model->costs_default)->category;
             }
             else $model->costs_default = 0;
+            $category_child = $model->category_child;
+            if($category_child) $model->category = $category_child;
             if($model->save()) {
                 if(Scores::changeScore('-'.$model->cost, $model->score)) {
                     Yii::$app->session->setFlash('success', "Расход успешно добавлен!");
@@ -129,6 +143,21 @@ class CostsController extends Controller
             Yii::$app->session->setFlash('error', "Произошла ошибка удаления!");
             return $this->redirect('index');
         }
+    }
+//---AJAX
+    public function actionGetSubCats()
+    {
+        $id = Yii::$app->request->post('id');
+        if($id) {
+            $option = '';
+            $cats = Categories::find()->where(['parent' => $id])->all();
+            if($cats) {
+                foreach($cats as $cat) {
+                    $option .= '<option value="'.$cat->id.'">'.$cat->name.'</option>';
+                }
+            }
+        }
+        return $option;
     }
 
 

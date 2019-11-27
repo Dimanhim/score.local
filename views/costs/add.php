@@ -12,6 +12,7 @@ use yii\helpers\Html;
 use yii\bootstrap\ActiveForm;
 use yii\captcha\Captcha;
 use yii\web\View;
+use \yii\helpers\ArrayHelper;
 
 $this->title = 'Добавление расхода';
 ?>
@@ -38,17 +39,25 @@ $this->title = 'Добавление расхода';
     <div class="costs-name">
         <?= $form->field($model, 'name')->textInput() ?>
     </div>
+<!--- категории -->
     <?php
-    $items = [];
-    foreach(Categories::find()->where(['source' => 0])->all() as $cat) {
-        $items[$cat->id] = $cat->name;
-    }
+    $items = ArrayHelper::map(Categories::getParentCats(0), 'id', 'name');
     $params = [
         'prompt' => 'Выбрать...'];
     ?>
     <div class="costs-category">
         <?= $form->field($model, 'category')->dropdownList($items, $params) ?>
     </div>
+<!--- подкатегории -->
+    <?php
+    $items = [];
+    $params = [
+        'prompt' => 'Выбрать...'];
+    ?>
+    <div class="costs-category auto-complete">
+        <?= $form->field($model, 'category_child')->dropdownList($items, $params) ?>
+    </div>
+
     <?= $form->field($model, 'cost')->textInput() ?>
     <?php
     $items = [];

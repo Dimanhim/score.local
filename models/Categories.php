@@ -27,6 +27,10 @@ class Categories extends ActiveRecord
             'source' => 'Источник',
         ];
     }
+    public function getParentCats($source)
+    {
+        return self::find()->where(['parent' => null, 'source' => $source])->all();
+    }
     public function getSubCats($id)
     {
         return self::find()->where(['parent' => $id])->all();

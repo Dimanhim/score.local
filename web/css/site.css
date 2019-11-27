@@ -97,6 +97,9 @@ a.desc:after {
     padding: 15px;
     border: none;
 }
+.auto-complete {
+    display: none;
+}
 
 @media(max-width:767px) {
     .nav li > form > button.logout {

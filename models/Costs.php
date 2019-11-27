@@ -11,7 +11,20 @@ class Costs extends ActiveRecord
         return [
             [['cost', 'score'], 'required'],
             [['name'], 'string'],
-            [['id', 'category', 'costs_default', 'cost', 'score', 'date'], 'integer'],
+            [['id', 'category', 'category_child', 'costs_default', 'cost', 'score', 'date'], 'integer'],
+        ];
+    }
+    public function attributes()
+    {
+        return [
+            'id',
+            'name',
+            'cost',
+            'costs_default',
+            'category',
+            'category_child',
+            'score',
+            'date',
         ];
     }
     public function attributeLabels()
@@ -21,6 +34,7 @@ class Costs extends ActiveRecord
             'cost' => 'Сумма',
             'costs_default' => 'Название по умолчанию',
             'category' => 'Категория',
+            'category_child' => 'Подкатегория',
             'score' => 'Списать со счета',
             'date' => 'Дата',
         ];
@@ -30,9 +44,6 @@ class Costs extends ActiveRecord
         $ids = [];
         $id = Categories::findOne($cat);
         $ids[0] = $id->id;
-
-
-
 
         foreach(Categories::getSubCats($cat) as $sub_cat) {
             $ids[] = $sub_cat->id;
