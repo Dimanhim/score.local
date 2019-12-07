@@ -7,6 +7,7 @@
 use app\models\ContactForm;
 use app\models\Categories;
 use app\models\Scores;
+use app\models\Settings;
 use yii\helpers\Html;
 use yii\bootstrap\ActiveForm;
 use yii\captcha\Captcha;

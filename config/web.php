@@ -17,6 +17,11 @@ $config = [
             'cookieValidationKey' => 'qYJK06UKJCkBj9gHtMvUtFNs3GoWtEvH',
             'baseUrl' => ''
         ],
+        'formatter' => [
+            'dateFormat'     => 'php:d-m-Y',
+            'datetimeFormat' => 'php:d-m-Y в H:i:s',
+            'timeFormat'     => 'php:H:i:s',
+        ],
         'cache' => [
             'class' => 'yii\caching\FileCache',
         ],

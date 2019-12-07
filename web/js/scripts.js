@@ -20,4 +20,7 @@ $(document).ready(function() {
         });
 
     });
+    $('#costs-date').on('change', function() {
+       console.log($(this).val());
+    });
 });

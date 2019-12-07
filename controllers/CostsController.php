@@ -12,6 +12,7 @@ use app\models\ContactForm;
 use app\models\Scores;
 use app\models\Categories;
 use app\models\Costs;
+use app\models\Settings;
 use app\models\CostsDefault;
 use app\models\IncomesDefault;
 use yii\data\Pagination;
@@ -70,7 +71,8 @@ class CostsController extends Controller
     //------------------------------------- РАСХОДЫ
     public function actionIndex()
     {
-        $model = Costs::find()->orderBy('date DESC')->where('date' > Scores::getTimeBeginMonth());
+        $set = new Settings();
+        $model = Costs::find()->where(['>', 'date', $set->beginDate])->andWhere(['<', 'date', $set->endDate])->orderBy('date DESC');
 
         // Пагинация
         $pagination = new Pagination(
@@ -86,18 +88,39 @@ class CostsController extends Controller
             'pagination' => $pagination,
         ]);
     }
+    public function actionCat($id)
+    {
+        $model = Costs::find()->where(['category' => $id]);
+
+        // Пагинация
+        $pagination = new Pagination(
+            [
+                'defaultPageSize' => 10,
+                'totalCount' => $model->count(),
+            ]
+        );
+        $model = $model->offset($pagination->offset)->limit($pagination->limit)->all();
+
+        return $this->render('cat', [
+            'model' => $model,
+            'pagination' => $pagination,
+        ]);
+    }
     public function actionAdd()
     {
         $model = new Costs();
         if($model->load(Yii::$app->request->post())) {
-            $model->date = time();
             if($model->costs_default != 0) {
                 $model->name = CostsDefault::findOne($model->costs_default)->name;
                 $model->category = CostsDefault::findOne($model->costs_default)->category;
+                $model->category_child = 0;
             }
-            else $model->costs_default = 0;
-            $category_child = $model->category_child;
+            else {
+                $model->costs_default = 0;
+            }
+
             if($category_child) $model->category = $category_child;
+            $model->date = strtotime($model->date);
             if($model->save()) {
                 if(Scores::changeScore('-'.$model->cost, $model->score)) {
                     Yii::$app->session->setFlash('success', "Расход успешно добавлен!");

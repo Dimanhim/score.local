@@ -13,6 +13,7 @@ use yii\bootstrap\ActiveForm;
 use yii\captcha\Captcha;
 use yii\web\View;
 use \yii\helpers\ArrayHelper;
+use kartik\date\DatePicker;
 
 $this->title = 'Добавление расхода';
 ?>
@@ -23,54 +24,7 @@ $this->title = 'Добавление расхода';
 </div>
 
 <div class="col-md-6 col-md-offset-3">
-    <?php $form = ActiveForm::begin(['fieldConfig' => ['options' => ['tag' => false]]]) ?>
-    <div class="changeble-default">
-        <?php
-        $items = [];
-        foreach(CostsDefault::find()->all() as $def) {
-            $items[$def->id] = $def->name;
-        }
-        $params = [
-            'prompt' => 'Выбрать...'];
-        ?>
-        <?= $form->field($model, 'costs_default')->dropdownList($items, $params) ?>
-    </div>
-
-    <div class="costs-name">
-        <?= $form->field($model, 'name')->textInput() ?>
-    </div>
-<!--- категории -->
-    <?php
-    $items = ArrayHelper::map(Categories::getParentCats(0), 'id', 'name');
-    $params = [
-        'prompt' => 'Выбрать...'];
-    ?>
-    <div class="costs-category">
-        <?= $form->field($model, 'category')->dropdownList($items, $params) ?>
-    </div>
-<!--- подкатегории -->
-    <?php
-    $items = [];
-    $params = [
-        'prompt' => 'Выбрать...'];
-    ?>
-    <div class="costs-category auto-complete">
-        <?= $form->field($model, 'category_child')->dropdownList($items, $params) ?>
-    </div>
-
-    <?= $form->field($model, 'cost')->textInput() ?>
-    <?php
-    $items = [];
-    foreach(Scores::find()->all() as $score) {
-        $items[$score->id] = $score->name;
-    }
-    $params = [
-        $score->id_default => ['Selected' => true]
-    ];
-    ?>
-    <?= $form->field($model, 'score')->dropdownList($items, $params) ?>
-    <?= Html::submitButton('Добавить', ['class' => "btn btn-primary"]) ?>
-    <?php ActiveForm::end() ?>
+    <?= $this->render('_form', ['model' => $model]) ?>
 </div>
 
 

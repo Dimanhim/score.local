@@ -11,7 +11,8 @@ class Costs extends ActiveRecord
         return [
             [['cost', 'score'], 'required'],
             [['name'], 'string'],
-            [['id', 'category', 'category_child', 'costs_default', 'cost', 'score', 'date'], 'integer'],
+            [['id', 'category', 'category_child', 'costs_default', 'cost', 'score'], 'integer'],
+            [['date'], 'safe'],
         ];
     }
     public function attributes()

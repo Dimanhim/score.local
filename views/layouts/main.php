@@ -39,6 +39,7 @@ AppAsset::register($this);
                         <li<?php if($activePage == 'incomes-default') { ?> class="active"<?php } ?>><a href="<?= Yii::$app->urlManager->createUrl(['incomes-default/index']) ?>">Доходы по умолчанию</a></li>
                         <li<?php if($activePage == 'payments') { ?> class="active"<?php } ?>><a href="<?= Yii::$app->urlManager->createUrl(['payments/index']) ?>">Обязательные платежи</a></li>
                         <li<?php if($activePage == 'payments') { ?> class="active"<?php } ?>><a href="<?= Yii::$app->urlManager->createUrl(['save/index']) ?>">Копилка</a></li>
+                        <li<?php if($activePage == 'settings') { ?> class="active"<?php } ?>><a href="<?= Yii::$app->urlManager->createUrl(['settings/index']) ?>">Настройки</a></li>
                     </ul>
                 </div>
                 <div class="col-md-9">

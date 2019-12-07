@@ -25,6 +25,20 @@ class Incomes extends ActiveRecord
             'date' => 'Дата',
         ];
     }
+    public function getCatCosts($cat) {
+        $price = 0;
+        $ids = [];
+        $id = Categories::findOne($cat);
+        $ids[0] = $id->id;
+
+        foreach(Categories::getSubCats($cat) as $sub_cat) {
+            $ids[] = $sub_cat->id;
+        }
+        foreach(self::find()->where(['category' => $ids])->all() as $cost) {
+            $price = $price + $cost->income;
+        }
+        return $price;
+    }
 }
 
 
