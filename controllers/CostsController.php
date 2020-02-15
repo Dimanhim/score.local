@@ -72,7 +72,7 @@ class CostsController extends Controller
     public function actionIndex()
     {
         $set = new Settings();
-        $model = Costs::find()->where(['>', 'date', $set->beginDate])->andWhere(['<', 'date', $set->endDate])->orderBy('date DESC');
+        $model = Costs::find()->where(['>=', 'date', $set->beginDate])->andWhere(['<', 'date', $set->endDate])->orderBy('date DESC');
 
         // Пагинация
         $pagination = new Pagination(
@@ -90,7 +90,8 @@ class CostsController extends Controller
     }
     public function actionCat($id)
     {
-        $model = Costs::find()->where(['category' => $id]);
+        $set = new Settings();
+        $model = Costs::find()->where(['category' => $id])->andWhere(['>=', 'date', $set->beginDate])->andWhere(['<', 'date', $set->endDate]);
 
         // Пагинация
         $pagination = new Pagination(
@@ -119,8 +120,8 @@ class CostsController extends Controller
                 $model->costs_default = 0;
             }
 
-            if($category_child) $model->category = $category_child;
-            $model->date = strtotime($model->date);
+            if($model->category_child) $model->category = $model->category_child;
+            $model->date = strtotime($model->date) + 1;
             if($model->save()) {
                 if(Scores::changeScore('-'.$model->cost, $model->score)) {
                     Yii::$app->session->setFlash('success', "Расход успешно добавлен!");
@@ -140,6 +141,7 @@ class CostsController extends Controller
     {
         $model = Costs::findOne($id);
         if($model->load(Yii::$app->request->post())) {
+            $model->date = strtotime($model->date) + 1;
             if($model->save()) {
                 Yii::$app->session->setFlash('success', "Расход успешно отредактирован!");
                 return $this->redirect('index');

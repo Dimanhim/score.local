@@ -52,7 +52,7 @@ $text = [];
     <div class="costs-category">
         <?= $form->field($model, 'category')->dropdownList($items, $params) ?>
     </div>
-    <?= $form->field($model, 'income')->textInput() ?>
+    <?= $form->field($model, 'income')->textInput(['type' => 'number']) ?>
     <?php
     $items = [];
     foreach(Scores::find()->all() as $score) {

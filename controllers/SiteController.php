@@ -2,6 +2,7 @@
 
 namespace app\controllers;
 
+use app\models\Settings;
 use Yii;
 use yii\filters\AccessControl;
 use yii\web\Controller;
@@ -70,7 +71,8 @@ class SiteController extends Controller
         $scores = Scores::find()->all();
         $cats = Categories::find()->orderBy('source ASC')->all();
         foreach($cats as $cat) {
-            $costs = Costs::find()->where(['category' => $cat->id])->all();
+            $set = new Settings();
+            $costs = Costs::find()->where(['category' => $cat->id])->andWhere(['>=', 'date', $set->beginDate])->andWhere(['<', 'date', $set->endDate])->all();
         }
         return $this->render('index', [
             'summa' => $summa,

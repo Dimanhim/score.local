@@ -65,7 +65,7 @@
 <?php } ?>
 
 <!--- сумма -->
-    <?= $form->field($model, 'cost')->textInput() ?>
+    <?= $form->field($model, 'cost')->textInput(['type' => 'number']) ?>
 <!--- списать со счета -->
     <?php
     $items = [];

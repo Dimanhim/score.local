@@ -11,6 +11,7 @@ use app\models\LoginForm;
 use app\models\ContactForm;
 use app\models\Scores;
 use app\models\Payments;
+use app\models\Save;
 use app\models\Categories;
 use app\models\Costs;
 use app\models\CostsDefault;

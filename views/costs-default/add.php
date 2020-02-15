@@ -21,20 +21,7 @@ $this->title = 'Расход по умолчанию';
 </div>
 
 <div class="col-md-6 col-md-offset-3">
-    <?php $form = ActiveForm::begin(['fieldConfig' => ['options' => ['tag' => false]]]) ?>
-    <?= $form->field($model, 'name')->textInput() ?>
-    <?php
-    $items = [];
-    foreach(Categories::find()->all() as $cat) {
-        $items[$cat->id] = $cat->name;
-    }
-    $params = [
-        'prompt' => 'Выбрать...'];
-    ?>
-    <?= $form->field($model, 'category')->dropdownList($items, $params) ?>
-
-    <?= Html::submitButton('Добавить', ['class' => "btn btn-primary"]) ?>
-    <?php ActiveForm::end() ?>
+    <?= $this->render('_form', ['model' => $model]) ?>
 </div>
 
 

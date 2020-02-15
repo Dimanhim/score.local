@@ -11,7 +11,6 @@ $this->title = 'Главная';
 ?>
 <?php
 
-
 ?>
 <table class="table">
     <tr>
@@ -19,7 +18,7 @@ $this->title = 'Главная';
         <td><b><?= Scores::getAccessMoney() ?></b></td>
     </tr>
     <?php foreach($scores as $score) { ?>
-        <?php if($score->is_check == 1) { ?>
+        <?php if(($score->is_check == 1) && ($score->id != 3)) { ?>
     <tr>
         <td><?= $score->name ?></td>
         <td><?= $score->summa ?> руб.</td>
@@ -27,7 +26,8 @@ $this->title = 'Главная';
         <?php } ?>
     <?php } ?>
 </table>
-<h2>Расходы по категориям с 20.10.2019 - 18.11.2019</h2>
+<?php $set =  new \app\models\Settings() ?>
+<h2>Расходы по категориям с <?= date('d-m-Y', $set->beginDate) ?> - <?= date('d-m-Y', $set->endDate) ?></h2>
 <?php
 $costs_count = 0;
 $incomes_count = 0;
@@ -72,8 +72,8 @@ $incomes_count = 0;
         <th>Доходы</th>
     </tr>
     <tr>
-        <td><?= $costs_count ?></td>
-        <td><?= $incomes_count ?></td>
+        <td><?= Costs::getCosts() ?></td>
+        <td><?= Incomes::getIncomes() ?></td>
     </tr>
 
 </table>

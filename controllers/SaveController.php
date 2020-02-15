@@ -101,10 +101,8 @@ class SaveController extends Controller
                 return $this->redirect('index');
             }
         }
-        $score = Save::findOne($id);
         return $this->render('edit', [
             'model' => $model,
-            'score' => $score,
         ]);
     }
     public function actionDelete($id)

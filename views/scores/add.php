@@ -20,7 +20,7 @@ if($score->is_check == 1) $text = ['checked' => true];
 <div class="col-md-6 col-md-offset-3">
     <?php $form = ActiveForm::begin(['fieldConfig' => ['options' => ['tag' => false]]]) ?>
     <?= $form->field($model, 'name')->textInput() ?>
-    <?= $form->field($model, 'summa')->textInput() ?>
+    <?= $form->field($model, 'summa')->textInput(['type' => 'number']) ?>
     <?= $form->field($model, 'id_default')->checkbox() ?>
     <?= $form->field($model, 'description')->textarea() ?>
     <?= $form->field($model, 'is_check')->checkbox($text) ?>

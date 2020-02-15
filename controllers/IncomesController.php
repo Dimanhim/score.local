@@ -2,6 +2,7 @@
 
 namespace app\controllers;
 
+use app\models\Settings;
 use Yii;
 use yii\filters\AccessControl;
 use yii\web\Controller;
@@ -71,7 +72,8 @@ class IncomesController extends Controller
     //------------------------------------- РАСХОДЫ
     public function actionIndex()
     {
-        $model = Incomes::find()->orderBy('date DESC');
+        $set = new Settings();
+        $model = Incomes::find()->where(['>=', 'date', $set->beginDate])->andWhere(['<', 'date', $set->endDate])->orderBy('date DESC');
 
         // Пагинация
         $pagination = new Pagination(

@@ -6,12 +6,13 @@ use yii\db\ActiveRecord;
 
 class CostsDefault extends ActiveRecord
 {
+    public $category_child;
     public function rules()
     {
         return [
             [['name'], 'required'],
             [['name'], 'string'],
-            [['id', 'category'], 'integer'],
+            [['id', 'category', 'category_child'], 'integer'],
         ];
     }
     public function attributeLabels()
@@ -19,6 +20,7 @@ class CostsDefault extends ActiveRecord
         return [
             'name' => 'Название',
             'category' => 'Категория',
+            'category_child' => 'Подкатегория',
         ];
     }
 }

@@ -37,7 +37,7 @@ $this->title = 'Редактирование дохода';
     ?>
 
     <?= $form->field($model, 'category')->dropdownList($items, $params) ?>
-    <?= $form->field($model, 'income')->textInput(['value' => $costs->income]) ?>
+    <?= $form->field($model, 'income')->textInput(['value' => $costs->income, 'type' => 'number']) ?>
 
     <?php
     $items = [];

@@ -11,9 +11,6 @@ use yii\captcha\Captcha;
 use yii\web\View;
 
 $this->title = 'Редактировать копилку';
-$text = [];
-if($score->id_default == 1) $text = ['checked' => true];
-if($score->is_check == 1) $text_2 = ['checked' => true];
 ?>
 <div class="col-md-6 col-md-offset-3" style="height: 40px; margin-top: 10px">
     <?php if( Yii::$app->session->hasFlash('success') ): ?>
@@ -23,8 +20,8 @@ if($score->is_check == 1) $text_2 = ['checked' => true];
 
 <div class="col-md-6 col-md-offset-3">
     <?php $form = ActiveForm::begin(['fieldConfig' => ['options' => ['tag' => false]]]) ?>
-    <?= $form->field($model, 'name')->textInput(['value' => $score->name]) ?>
-    <?= $form->field($model, 'summa')->textInput(['value' => $score->summa]) ?>
+    <?= $form->field($model, 'name')->textInput() ?>
+    <?= $form->field($model, 'summa')->textInput() ?>
     <?= Html::submitButton('Сохранить', ['class' => "btn btn-primary"]) ?>
     <br />
     <?= Html::a('Вернуться в копилку', Yii::$app->urlManager->createUrl(['save/index']), ['class' => "btn btn-default", 'style' => 'margin-top: 10px']) ?>

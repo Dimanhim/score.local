@@ -43,7 +43,7 @@ $this->title = 'Переводы между счетами';
             'prompt' => 'Выбрать...'];
         ?>
         <?= $form->field($model, 'transfer_in')->dropdownList($items, $params) ?>
-        <?= $form->field($model, 'summa')->textInput(['placeholder' => 'Введите сумму']) ?>
+        <?= $form->field($model, 'summa')->textInput(['placeholder' => 'Введите сумму', 'type' => 'number']) ?>
 
     </div>
 
