@@ -15,12 +15,23 @@ use app\models\Categories;
 use app\models\Costs;
 use app\models\CostsDefault;
 use app\models\IncomesDefault;
+use app\models\User;
+use app\models\FormRegistration;
 
 class SiteController extends Controller
 {
     /**
      * {@inheritdoc}
      */
+    public function beforeAction($action)
+    {
+        $user = Yii::$app->user;
+        if($user->isGuest AND $this->action->id !== 'login')
+        {
+            $user->loginRequired();
+        }
+        return true;
+    }
     public function behaviors()
     {
         return [
@@ -78,6 +89,34 @@ class SiteController extends Controller
             'summa' => $summa,
             'scores' => $scores,
             'cats' => $cats,
+        ]);
+    }
+
+    public function actionRegistration()
+    {
+        $model = new FormRegistration();
+        if($model->load(\Yii::$app->request->post())){
+            $user = new User();
+            $user->username = $model->username;
+            $user->password = $model->password;
+            if($model->password == $model->password_2) {
+                $user->password = \Yii::$app->security->generatePasswordHash($model->password);
+                if($user->save()) {
+                    Yii::$app->session->setFlash('success', "Поздравляем! Вы успешно зарегистрировались в системе!");
+                    $login = new LoginForm();
+                    $login->username = $model->username;
+                    $login->password = $model->password;
+                    if($login->login()) return $this->goHome();
+                };
+            }
+            else {
+                Yii::$app->session->setFlash('error', "Пароли не совпадают!");
+                return $this->redirect('registration');
+            }
+
+        }
+        return $this->render('registration', [
+            'model' => $model,
         ]);
     }
 

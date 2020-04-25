@@ -63,6 +63,10 @@ class Costs extends ActiveRecord
         }
         return $price;
     }
+    public function getScore()
+    {
+        return $this->hasMany(Scores::className(), ['id' => 'score']);
+    }
 
 }
 

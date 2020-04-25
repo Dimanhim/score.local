@@ -69,7 +69,7 @@
 <!--- списать со счета -->
     <?php
     $items = [];
-    foreach(Scores::find()->all() as $score) {
+    foreach(Scores::find()->orderBy('id_default DESC')->all() as $score) {
         $items[$score->id] = $score->name;
     }
     $params = [

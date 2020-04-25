@@ -14,7 +14,7 @@ class Categories extends ActiveRecord
         return [
             [['name'], 'required'],
             [['name', 'description'], 'string'],
-            [['id', 'date', 'parent', 'source'], 'integer'],
+            [['id', 'date', 'parent', 'source', 'visible'], 'integer'],
         ];
     }
     public function attributeLabels()
@@ -25,6 +25,7 @@ class Categories extends ActiveRecord
             'date' => 'Дата создания',
             'parent' => 'Родительская категория',
             'source' => 'Источник',
+            'visible' => 'Видимость',
         ];
     }
     public function getParentCats($source)

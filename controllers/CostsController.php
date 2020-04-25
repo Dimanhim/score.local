@@ -19,6 +19,16 @@ use yii\data\Pagination;
 
 class CostsController extends Controller
 {
+
+    public function beforeAction($action)
+    {
+        $user = Yii::$app->user;
+        if($user->isGuest AND $this->action->id !== 'login')
+        {
+            $user->loginRequired();
+        }
+        return true;
+    }
     /**
      * {@inheritdoc}
      */
@@ -72,7 +82,7 @@ class CostsController extends Controller
     public function actionIndex()
     {
         $set = new Settings();
-        $model = Costs::find()->where(['>=', 'date', $set->beginDate])->andWhere(['<', 'date', $set->endDate])->orderBy('date DESC');
+        $model = Costs::find()->where(['>=', 'date', $set->beginDate])->andWhere(['<', 'date', ($set->endDate + 86399)])->orderBy('date DESC');
 
         // Пагинация
         $pagination = new Pagination(
@@ -185,66 +195,4 @@ class CostsController extends Controller
         return $option;
     }
 
-
-    /**
-     * Login action.
-     *
-     * @return Response|string
-     */
-    public function actionLogin()
-    {
-        if (!Yii::$app->user->isGuest) {
-            return $this->goHome();
-        }
-
-        $model = new LoginForm();
-        if ($model->load(Yii::$app->request->post()) && $model->login()) {
-            return $this->goBack();
-        }
-
-        $model->password = '';
-        return $this->render('login', [
-            'model' => $model,
-        ]);
-    }
-
-    /**
-     * Logout action.
-     *
-     * @return Response
-     */
-    public function actionLogout()
-    {
-        Yii::$app->user->logout();
-
-        return $this->goHome();
-    }
-
-    /**
-     * Displays contact page.
-     *
-     * @return Response|string
-     */
-    public function actionContact()
-    {
-        $model = new ContactForm();
-        if ($model->load(Yii::$app->request->post()) && $model->contact(Yii::$app->params['adminEmail'])) {
-            Yii::$app->session->setFlash('contactFormSubmitted');
-
-            return $this->refresh();
-        }
-        return $this->render('contact', [
-            'model' => $model,
-        ]);
-    }
-
-    /**
-     * Displays about page.
-     *
-     * @return string
-     */
-    public function actionAbout()
-    {
-        return $this->render('about');
-    }
 }
