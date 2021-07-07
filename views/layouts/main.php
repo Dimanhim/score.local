@@ -11,6 +11,7 @@ use yii\widgets\Breadcrumbs;
 use app\assets\AppAsset;
 
 $activePage = Yii::$app->controller->id;
+$activeAction = Yii::$app->controller->action->id;
 AppAsset::register($this);
 ?>
 <?php $this->beginPage() ?>
@@ -47,10 +48,11 @@ AppAsset::register($this);
                         <li<?php if($activePage == 'site') { ?> class="active"<?php } ?>><a href="<?= Yii::$app->urlManager->createUrl(['site/index']) ?>">Главная</a></li>
                         <li<?php if($activePage == 'scores') { ?> class="active"<?php } ?>><a href="<?= Yii::$app->urlManager->createUrl(['scores/index']) ?>">Мои счета</a></li>
 
-                        <li<?php if($activePage == 'costs') { ?> class="active"<?php } ?>><a href="<?= Yii::$app->urlManager->createUrl(['costs/index']) ?>">Расходы</a></li>
+                        <li<?php if(($activePage == 'costs') && ($activeAction == 'index')) { ?> class="active"<?php } ?>><a href="<?= Yii::$app->urlManager->createUrl(['costs/index']) ?>">Расходы</a></li>
                         <li<?php if($activePage == 'incomes') { ?> class="active"<?php } ?>><a href="<?= Yii::$app->urlManager->createUrl(['incomes/index']) ?>">Доходы</a></li>
 
-                        <li<?php if($activePage == 'costs-default') { ?> class="active"<?php } ?>><a href="<?= Yii::$app->urlManager->createUrl(['transfer/add']) ?>">Переводы</a></li>
+                        <li<?php if($activePage == 'transfer') { ?> class="active"<?php } ?>><a href="<?= Yii::$app->urlManager->createUrl(['transfer/add']) ?>">Переводы</a></li>
+                        <li<?php if(($activePage == 'costs') && ($activeAction == 'days')) { ?> class="active"<?php } ?>><a href="<?= Yii::$app->urlManager->createUrl(['costs/days']) ?>">По дням</a></li>
                     </ul>
                     <?= Alert::widget() ?>
                     <?= $content ?>

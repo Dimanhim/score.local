@@ -67,6 +67,11 @@ class Costs extends ActiveRecord
     {
         return $this->hasMany(Scores::className(), ['id' => 'score']);
     }
+    public function getDateValue()
+    {
+        $date = date('d.m.Y', $this->date);
+        return strtotime($date);
+    }
 
 }
 

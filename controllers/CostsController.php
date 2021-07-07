@@ -30,6 +30,7 @@ class CostsController extends Controller
         }
         return true;
     }*/
+   const DAYS = 30;
     /**
      * {@inheritdoc}
      */
@@ -186,6 +187,35 @@ class CostsController extends Controller
             Yii::$app->session->setFlash('error', "Произошла ошибка удаления!");
             return $this->redirect('index');
         }
+    }
+
+    public function actionDays()
+    {
+        $highDate = strtotime(date('d.m.Y')) + 84600;
+        $lowDate = $highDate - self::DAYS * 84600;
+
+        $costs = Costs::find()->where(['>=', 'date', $lowDate])->andWhere(['<=', 'date', $highDate])->orderBy(['date' => SORT_DESC])->all();
+        $datesArray = [];
+        $resultArray = [];
+        foreach($costs as $cost) {
+            if(!in_array($cost->dateValue, $datesArray)) {
+                $datesArray[] = $cost->dateValue;
+                $resultArray[$cost->dateValue] = $cost->cost;
+            }
+            else {
+                $resultArray[$cost->dateValue] += $cost->cost;
+            }
+        }
+        return $this->render('days', [
+            'results' => $resultArray,
+        ]);
+    }
+    public function actionEachDay($date)
+    {
+        $costs = Costs::find()->where(['<=', 'date', ($date + 86400)])->andWhere(['>=', 'date', $date])->all();
+        return $this->render('each-day', [
+            'costs' => $costs,
+        ]);
     }
 //---AJAX
     public function actionGetSubCats()
