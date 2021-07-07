@@ -14,7 +14,7 @@ class Categories extends ActiveRecord
         return [
             [['name'], 'required'],
             [['name', 'description'], 'string'],
-            [['id', 'date', 'parent', 'source', 'visible'], 'integer'],
+            [['id', 'date', 'parent', 'source', 'show_default'], 'integer'],
         ];
     }
     public function attributeLabels()
@@ -25,12 +25,12 @@ class Categories extends ActiveRecord
             'date' => 'Дата создания',
             'parent' => 'Родительская категория',
             'source' => 'Источник',
-            'visible' => 'Видимость',
+            'show_default' => 'Показывать',
         ];
     }
     public function getParentCats($source)
     {
-        return self::find()->where(['parent' => null, 'source' => $source])->all();
+        return self::find()->where(['parent' => null, 'source' => $source, 'show_default' => 1])->all();
     }
     public function getSubCats($id)
     {

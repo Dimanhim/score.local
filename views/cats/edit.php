@@ -10,6 +10,7 @@ use yii\helpers\Html;
 use yii\bootstrap\ActiveForm;
 use yii\captcha\Captcha;
 use yii\web\View;
+use yii\helpers\ArrayHelper;
 
 $this->title = 'Категория';
 ?>
@@ -23,18 +24,7 @@ $this->title = 'Категория';
     <?php $form = ActiveForm::begin(['fieldConfig' => ['options' => ['tag' => false]]]) ?>
     <?= $form->field($model, 'name')->textInput(['value' => $category->name]) ?>
     <?= $form->field($model, 'description')->textInput(['value' => $category->description]) ?>
-    <?php
-    $items = [];
-    foreach(Categories::find()->all() as $cat) {
-        $items[$cat->id] = $cat->name;
-    }
-    $params = [
-        'options' =>[
-            $cat->parent => ['Selected' => true]
-        ],
-        'prompt' => 'Выбрать...'];
-    ?>
-    <?= $form->field($model, 'parent')->dropdownList($items, $params) ?>
+    <?= $form->field($model, 'parent')->dropdownList(ArrayHelper::map(Categories::find()->all(), 'id', 'name'), ['prompt' => 'Выбрать...']) ?>
 
     <?php
     $items = [];
@@ -48,6 +38,7 @@ $this->title = 'Категория';
         'prompt' => 'Выбрать...'];
     ?>
     <?= $form->field($model, 'source')->dropdownList($items, $params) ?>
+    <?= $form->field($model, 'show_default')->dropDownList([1 => 'Да', 0 => 'Нет']) ?>
 
     <?= Html::submitButton('Сохранить', ['class' => "btn btn-primary"]) ?>
     <br />

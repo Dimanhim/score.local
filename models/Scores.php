@@ -13,7 +13,7 @@ class Scores extends ActiveRecord
         return [
             [['name'], 'required'],
             [['name', 'description'], 'string'],
-            [['id', 'is_check', 'id_default', 'summa'], 'integer'],
+            [['id', 'is_check', 'id_default', 'summa', 'credit_limit'], 'integer'],
         ];
     }
     public function attributeLabels()
@@ -24,6 +24,7 @@ class Scores extends ActiveRecord
             'id_default' => 'По умолчанию',
             'is_check' => 'Учитывать при подсчете',
             'summa' => 'Сумма',
+            'credit_limit' => 'Кредитный лимит',
         ];
     }
     public function getScoreName($id)
@@ -45,6 +46,9 @@ class Scores extends ActiveRecord
         foreach($scores as $score) {
             if($score->is_check ==1) {
                 $summa = $summa + $score->summa;
+            }
+            if($score->credit_limit) {
+                $summa = $summa - ($score->credit_limit - $score->summa);
             }
         }
         $summa = Scores::getActualMoney($summa);

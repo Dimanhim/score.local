@@ -24,6 +24,7 @@ $count = 1;
             <th>Название</th>
             <th>Дочерние</th>
             <th>Описание</th>
+            <th>Показывать</th>
             <th>Дата создания</th>
             <th>Действия</th>
         </tr>
@@ -45,6 +46,7 @@ $count = 1;
                     </ul>
                 </td>
                 <td><?= $m->description ?></td>
+                <td><?= $m->show_default ? 'Да' : 'Нет' ?></td>
 
                 <td><?= date('d-m-Y', $m->date) ?></td>
                 <td>

@@ -19,13 +19,15 @@ $this->title = 'Счета';
             <th>Название</th>
             <th>Текущая сумма</th>
             <th>По умолчанию</th>
+            <th>Кредитный лимит</th>
             <th>Действие</th>
         </tr>
         <?php foreach($scores as $score) { ?>
         <tr>
             <td><?= $score->name ?></td>
             <td><?= $score->summa ?> руб.</td>
-            <td><?= $score->id_default ? Да : Нет ?></td>
+            <td><?= $score->id_default ? 'Да' : 'Нет' ?></td>
+            <td><?= $score->credit_limit ?></td>
             <td>
                 <a href="<?= Yii::$app->urlManager->createUrl(['scores/view?id='.$score->id]) ?>"><span class="glyphicon glyphicon-eye-open"></span></a>
                 <a href="<?= Yii::$app->urlManager->createUrl(['scores/edit?id='.$score->id]) ?>"><span class="glyphicon glyphicon-edit"></span></a>

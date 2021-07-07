@@ -16,11 +16,12 @@ use app\models\Settings;
 use app\models\CostsDefault;
 use app\models\IncomesDefault;
 use yii\data\Pagination;
+use app\models\CostsSearch;
 
 class CostsController extends Controller
 {
 
-    public function beforeAction($action)
+   /* public function beforeAction($action)
     {
         $user = Yii::$app->user;
         if($user->isGuest AND $this->action->id !== 'login')
@@ -28,7 +29,7 @@ class CostsController extends Controller
             $user->loginRequired();
         }
         return true;
-    }
+    }*/
     /**
      * {@inheritdoc}
      */
@@ -81,7 +82,14 @@ class CostsController extends Controller
     //------------------------------------- РАСХОДЫ
     public function actionIndex()
     {
-        $set = new Settings();
+        $searchModel = new CostsSearch();
+        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+        return $this->render('index', [
+            'searchModel' => $searchModel,
+            'dataProvider' => $dataProvider,
+        ]);
+
+        /*$set = new Settings();
         $model = Costs::find()->where(['>=', 'date', $set->beginDate])->andWhere(['<', 'date', ($set->endDate + 86399)])->orderBy('date DESC');
 
         // Пагинация
@@ -96,7 +104,7 @@ class CostsController extends Controller
         return $this->render('index', [
             'model' => $model,
             'pagination' => $pagination,
-        ]);
+        ]);*/
     }
     public function actionCat($id)
     {
@@ -185,7 +193,7 @@ class CostsController extends Controller
         $id = Yii::$app->request->post('id');
         if($id) {
             $option = '';
-            $cats = Categories::find()->where(['parent' => $id])->all();
+            $cats = Categories::find()->where(['parent' => $id, 'show_default' => 1])->all();
             if($cats) {
                 foreach($cats as $cat) {
                     $option .= '<option value="'.$cat->id.'">'.$cat->name.'</option>';

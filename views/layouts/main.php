@@ -52,6 +52,7 @@ AppAsset::register($this);
 
                         <li<?php if($activePage == 'costs-default') { ?> class="active"<?php } ?>><a href="<?= Yii::$app->urlManager->createUrl(['transfer/add']) ?>">Переводы</a></li>
                     </ul>
+                    <?= Alert::widget() ?>
                     <?= $content ?>
                 </div>
 
