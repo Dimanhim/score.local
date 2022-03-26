@@ -37,6 +37,21 @@ use kartik\date\DatePicker;
     ]
 ]);
 ?>
+<?= $form->field($model, 'month_limit')->textInput() ?>
+<div class="row">
+    <div class="col-md-6">
+        <?= $form->field($model, 'notes_1')->textarea(['cols' => 10, 'rows' => 10]) ?>
+    </div>
+    <div class="col-md-6">
+        <?= $form->field($model, 'notes_2')->textarea(['cols' => 10, 'rows' => 10]) ?>
+    </div>
+    <div class="col-md-6">
+        <?= $form->field($model, 'notes_3')->textarea(['cols' => 10, 'rows' => 10]) ?>
+    </div>
+    <div class="col-md-6">
+        <?= $form->field($model, 'notes_4')->textarea(['cols' => 10, 'rows' => 10]) ?>
+    </div>
+</div>
 
 <?= Html::submitButton('Сохранить', ['class' => "btn btn-primary"]) ?>
 <?php ActiveForm::end() ?>

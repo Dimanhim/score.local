@@ -9,7 +9,7 @@ class Settings extends ActiveRecord
     public function rules()
     {
         return [
-            [['id', 'time_begin', 'time_end'], 'safe'],
+            [['id', 'time_begin', 'time_end', 'month_limit', 'notes_1', 'notes_2', 'notes_3', 'notes_4'], 'safe'],
         ];
     }
     public function attributes()
@@ -18,6 +18,11 @@ class Settings extends ActiveRecord
             'id',
             'time_begin',
             'time_end',
+            'month_limit',
+            'notes_1',
+            'notes_2',
+            'notes_3',
+            'notes_4',
         ];
     }
     public function attributeLabels()
@@ -25,6 +30,11 @@ class Settings extends ActiveRecord
         return [
             'time_begin' => 'С даты',
             'time_end' => 'До даты',
+            'month_limit' => 'Лимит расходов в месяц',
+            'notes_1' => 'Общие заметки',
+            'notes_2' => 'Заметки по покупкам',
+            'notes_3' => 'Заметки по инвестициям',
+            'notes_4' => 'Другие заметки',
         ];
     }
     public function getBeginDate()

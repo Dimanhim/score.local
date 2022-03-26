@@ -85,7 +85,7 @@ class CostsDefaultController extends Controller
     {
         $model = new CostsDefault();
         if($model->load(Yii::$app->request->post())) {
-            $model->category = $model->category_child;
+            $model->category = $model->category_child ? $model->category_child : $model->category;
             if($model->save()) {
                 Yii::$app->session->setFlash('success', "Расход успешно добавлен!");
                 return $this->redirect('index');

@@ -9,6 +9,8 @@ use yii\bootstrap\ActiveForm;
 use yii\captcha\Captcha;
 
 $this->title = 'Обязательные платежи';
+
+$totalSumm = 0;
 ?>
 <div class="scores">
     <?php if( Yii::$app->session->hasFlash('success') ): ?>
@@ -30,7 +32,13 @@ $this->title = 'Обязательные платежи';
                 <a href="<?= Yii::$app->urlManager->createUrl(['payments/delete?id='.$score->id]) ?>" class="delete"><span class="glyphicon glyphicon-remove"></span></a>
             </td>
         </tr>
+            <?php $totalSumm += $score->summa ?>
         <?php } ?>
+        <tr>
+            <td><b>Итого:</b></td>
+            <td><b><?= $totalSumm ?> руб.</b></td>
+            <td></td>
+        </tr>
         <tr>
             <td><a href="<?= Yii::$app->urlManager->createUrl(['payments/add']) ?>" class="btn btn-primary">Добавить платеж</a></td>
             <td colspan="2"></td>

@@ -53,6 +53,7 @@ AppAsset::register($this);
 
                         <li<?php if($activePage == 'transfer') { ?> class="active"<?php } ?>><a href="<?= Yii::$app->urlManager->createUrl(['transfer/add']) ?>">Переводы</a></li>
                         <li<?php if(($activePage == 'costs') && ($activeAction == 'days')) { ?> class="active"<?php } ?>><a href="<?= Yii::$app->urlManager->createUrl(['costs/days']) ?>">По дням</a></li>
+                        <li<?php if($activePage == 'invest') { ?> class="active"<?php } ?>><a href="<?= Yii::$app->urlManager->createUrl(['invest/index']) ?>">Invest</a></li>
                     </ul>
                     <?= Alert::widget() ?>
                     <?= $content ?>

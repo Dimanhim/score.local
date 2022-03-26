@@ -6,12 +6,46 @@ use app\models\Categories;
 use app\models\Scores;
 use app\models\Costs;
 use app\models\Incomes;
+use app\models\Settings;
+use app\controllers\CostsController;
 
 $this->title = 'Главная';
-?>
-<?php
+$settings = Settings::find()->one();
+$checkForDays = $settings->month_limit;
+
+$middleDefaultCosts = $checkForDays / Costs::getDaysForStatistycs();
+
+$tomorrow = strtotime(date('d.m.Y')) + 86400;
+$allCosts = Costs::getCosts(true);
+
+$middleCosts = $allCosts / (($tomorrow - $settings->time_begin) / 86400);
+
+$oneDayDiff = round($middleDefaultCosts - Costs::getDayCost());
+
+if(($middleCosts - $middleDefaultCosts) > 0) {
+    $infoResult = [
+        'message' => 'Вы превышаете лимит на '.round($middleCosts - $middleDefaultCosts).' руб/день (дневной: '.$oneDayDiff.')',
+        'payed_for_today' => $middleCosts,
+        'remainder' => round($checkForDays - $allCosts),
+        'class' => 'bg-danger',
+    ];
+} else {
+    $infoResult = [
+        'message' => 'Выше на '.round($middleDefaultCosts - $middleCosts).' руб/день (дневной: '.$oneDayDiff.')',
+        'payed_for_today' => $middleCosts,
+        'remainder' => round($checkForDays - $allCosts),
+        'class' => 'bg-success',
+    ];
+}
 
 ?>
+<div class="bg-block <?= $infoResult['class'] ?>">
+    <div class="row">
+        <div class="col-xs-8"><?= $infoResult['message'] ?></div>
+        <div class="col-xs-4">осталось <?= $infoResult['remainder'] ?> руб.</div>
+    </div>
+    <?//= date('d.m.Y H:i', $tomorrow)  ?>
+</div>
 <table class="table">
     <tr>
         <td>Всего доступных средств</td>

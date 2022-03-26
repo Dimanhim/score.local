@@ -9,6 +9,7 @@ use yii\bootstrap\ActiveForm;
 use yii\captcha\Captcha;
 
 $this->title = 'Копилка';
+$totalSumm = 0;
 ?>
 <div class="scores">
     <?php if( Yii::$app->session->hasFlash('success') ): ?>
@@ -30,7 +31,17 @@ $this->title = 'Копилка';
                 <a href="<?= Yii::$app->urlManager->createUrl(['save/delete?id='.$score->id]) ?>" class="delete"><span class="glyphicon glyphicon-remove"></span></a>
             </td>
         </tr>
+            <?php $totalSumm += $score->summa ?>
         <?php } ?>
+        <tr>
+            <td>
+                <b>Итого:</b>
+            </td>
+            <td>
+                <b><?= $totalSumm ?> руб.</b>
+            </td>
+            <td></td>
+        </tr>
         <tr>
             <td><a href="<?= Yii::$app->urlManager->createUrl(['save/add']) ?>" class="btn btn-primary">Добавить накопление</a></td>
             <td colspan="2"></td>

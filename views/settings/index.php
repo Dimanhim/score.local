@@ -18,10 +18,10 @@ use kartik\date\DatePicker;
 $this->title = 'Настройки';
 ?>
 <?php
-echo Scores::getTimeBeginMonth();
+//echo Scores::getTimeBeginMonth();
 ?>
 
-<div class="col-md-6 col-md-offset-3" style="height: 40px; margin-top: 10px">
+<div class="col-md-12" style="height: 40px; margin-top: 10px">
     <?php if( Yii::$app->session->hasFlash('success') ): ?>
         <p class="bg-info" style="padding: 10px; border-radius: 5px"><?php echo Yii::$app->session->getFlash('success'); ?></p>
     <?php endif;?>
@@ -30,7 +30,7 @@ echo Scores::getTimeBeginMonth();
     <?php endif;?>
 </div>
 
-<div class="col-md-6 col-md-offset-3">
+<div class="col-md-12">
     <?= $this->render('_form', ['model' => $model]) ?>
 </div>
 

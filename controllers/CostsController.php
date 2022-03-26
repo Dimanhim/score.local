@@ -129,11 +129,14 @@ class CostsController extends Controller
     public function actionAdd()
     {
         $model = new Costs();
+        $model->check_for_days = 1;
         if($model->load(Yii::$app->request->post())) {
             if($model->costs_default != 0) {
-                $model->name = CostsDefault::findOne($model->costs_default)->name;
-                $model->category = CostsDefault::findOne($model->costs_default)->category;
+                $costsDefault = CostsDefault::findOne($model->costs_default);
+                $model->name = $costsDefault->name;
+                $model->category = $costsDefault->category;
                 $model->category_child = 0;
+                if($costsDefault->id == 16) $model->score = 1;
             }
             else {
                 $model->costs_default = 0;
@@ -156,18 +159,18 @@ class CostsController extends Controller
             'model' => $model,
         ]);
     }
-    public function actionEdit($id)
+    public function actionUpdate($id)
     {
         $model = Costs::findOne($id);
         if($model->load(Yii::$app->request->post())) {
             $model->date = strtotime($model->date) + 1;
             if($model->save()) {
                 Yii::$app->session->setFlash('success', "Расход успешно отредактирован!");
-                return $this->redirect('index');
+                return $this->redirect(Yii::$app->request->referrer);
             }
             else {
                 Yii::$app->session->setFlash('error', "Произошла ошибка сохранения!");
-                return $this->redirect('index');
+                return $this->redirect(Yii::$app->request->referrer);
             }
         }
         $costs = Costs::findOne($id);
@@ -192,9 +195,9 @@ class CostsController extends Controller
     public function actionDays()
     {
         $highDate = strtotime(date('d.m.Y')) + 84600;
-        $lowDate = $highDate - self::DAYS * 84600;
+        $lowDate = $highDate - Costs::getDaysForStatistycs() * 84600;
 
-        $costs = Costs::find()->where(['>=', 'date', $lowDate])->andWhere(['<=', 'date', $highDate])->orderBy(['date' => SORT_DESC])->all();
+        $costs = Costs::find()->where(['>=', 'date', $lowDate])->andWhere(['<=', 'date', $highDate])->andWhere(['check_for_days' => 1])->orderBy(['date' => SORT_DESC])->all();
         $datesArray = [];
         $resultArray = [];
         foreach($costs as $cost) {
@@ -208,6 +211,7 @@ class CostsController extends Controller
         }
         return $this->render('days', [
             'results' => $resultArray,
+            'days' => self::DAYS,
         ]);
     }
     public function actionEachDay($date)
@@ -217,6 +221,7 @@ class CostsController extends Controller
             'costs' => $costs,
         ]);
     }
+
 //---AJAX
     public function actionGetSubCats()
     {

@@ -9,6 +9,7 @@ use yii\bootstrap\ActiveForm;
 use yii\captcha\Captcha;
 
 $this->title = 'Счета';
+$totalSumm = 0;
 ?>
 <div class="scores">
     <?php if( Yii::$app->session->hasFlash('success') ): ?>
@@ -25,7 +26,17 @@ $this->title = 'Счета';
         <?php foreach($scores as $score) { ?>
         <tr>
             <td><?= $score->name ?></td>
-            <td><?= $score->summa ?> руб.</td>
+            <td>
+                <?php
+                    if(!$score->credit_limit) {
+                        if($score->id != 19)
+                            $totalSumm += $score->summa;
+                    } else {
+                        $totalSumm += $score->summa - $score->credit_limit;
+                    }
+                ?>
+                <?= $score->summa ?> руб.
+            </td>
             <td><?= $score->id_default ? 'Да' : 'Нет' ?></td>
             <td><?= $score->credit_limit ?></td>
             <td>
@@ -35,6 +46,17 @@ $this->title = 'Счета';
             </td>
         </tr>
         <?php } ?>
+        <tr>
+            <td>
+                <b>Итого:</b>
+            </td>
+            <td>
+                <b><?= $totalSumm ?></b>
+            </td>
+            <td colspan="3">
+                <i>За вычетом кредитных карт и Текущего счета ВТБ</i>
+            </td>
+        </tr>
         <tr>
             <td><a href="<?= Yii::$app->urlManager->createUrl(['scores/add']) ?>" class="btn btn-primary">Добавить счет</a></td>
             <td colspan="2"></td>

@@ -1,4 +1,4 @@
-<?php 
+<?php
     use app\models\ContactForm;
     use app\models\Categories;
     use app\models\Scores;
@@ -89,6 +89,7 @@
             ]
         ]);
     ?>
+    <?= $form->field($model, 'check_for_days')->checkbox() ?>
 
     <?= Html::submitButton('Сохранить', ['class' => "btn btn-primary"]) ?>
     <?php ActiveForm::end() ?>

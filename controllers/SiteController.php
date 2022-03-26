@@ -80,7 +80,7 @@ class SiteController extends Controller
     {
         $summa = [];
         $scores = Scores::find()->all();
-        $cats = Categories::find()->orderBy('source ASC')->all();
+        $cats = Categories::find()->where(['show_default' => 1])->orderBy('source ASC')->all();
         foreach($cats as $cat) {
             $set = new Settings();
             $costs = Costs::find()->where(['category' => $cat->id])->andWhere(['>=', 'date', $set->beginDate])->andWhere(['<', 'date', $set->endDate])->all();
