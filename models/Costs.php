@@ -8,13 +8,15 @@ class Costs extends ActiveRecord
 {
     const DAY_FOR_STAT = 15;
 
+    public $obligstory_payments;
+
     public function rules()
     {
         return [
             [['cost', 'score'], 'required'],
             [['name'], 'string'],
             [['id', 'category', 'category_child', 'costs_default', 'cost', 'score', 'check_for_days'], 'integer'],
-            [['date'], 'safe'],
+            [['date', 'obligstory_payments'], 'safe'],
         ];
     }
     public function attributes()
@@ -42,7 +44,13 @@ class Costs extends ActiveRecord
             'score' => 'Списать со счета',
             'date' => 'Дата',
             'check_for_days' => 'Учитывать в расходах по дням',
+            'obligstory_payments' => 'Обязательные платежи',
         ];
+    }
+    public function afterSave($insert, $attributes)
+    {
+        Log::addLog(Log::TYPE_COST, $this->cost, 'Добавлен расход');
+        return parent::afterSave($insert, $attributes);
     }
     public function getCatCosts($cat) {
         $price = 0;

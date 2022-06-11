@@ -20,13 +20,33 @@ class AppAsset extends AssetBundle
     public $basePath = '@webroot';
     public $baseUrl = '@web';
     public $css = [
-        'css/site.css?v=1',
+        //'css/site.css?v=1',
     ];
     public $js = [
-        'js/scripts.js'
+        //'js/scripts.js'
     ];
     public $depends = [
         'yii\web\YiiAsset',
         'yii\bootstrap\BootstrapAsset',
     ];
+
+    public function init()
+    {
+        $this->css = self::getCss();
+        $this->js = self::getJs();
+    }
+
+    public function getCss()
+    {
+        return [
+            'css/site.css?v='.mt_rand(1000,10000),
+        ];
+    }
+
+    public function getJs()
+    {
+        return [
+            'js/scripts.js?v='.mt_rand(1000,10000),
+        ];
+    }
 }

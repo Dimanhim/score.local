@@ -16,6 +16,9 @@ body {
 .bg-block {
     padding: 15px;
 }
+#obligstory_payments {
+    display: none;
+}
 .footer {
     height: 60px;
     background-color: #f5f5f5;

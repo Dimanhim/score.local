@@ -34,4 +34,13 @@ $(document).ready(function() {
     $('#costs-date').on('change', function() {
        console.log($(this).val());
     });
+    $('body').on('change', '#costs-check_for_days', function(e) {
+        e.preventDefault();
+        if(!$(this).is(':checked')) {
+            $('#obligstory_payments').fadeIn();
+        }
+        else {
+            $('#obligstory_payments').fadeOut();
+        }
+    });
 });

@@ -9,6 +9,7 @@
     use yii\web\View;
     use \yii\helpers\ArrayHelper;
     use kartik\date\DatePicker;
+    use app\models\Payments;
 ?>
 <?php $form = ActiveForm::begin(['fieldConfig' => ['options' => ['tag' => false]]]) ?>
 <!-- по умолчанию -->
@@ -89,7 +90,11 @@
             ]
         ]);
     ?>
+
     <?= $form->field($model, 'check_for_days')->checkbox() ?>
+    <div id="obligstory_payments">
+        <?= $form->field($model, 'obligstory_payments')->dropDownList(ArrayHelper::map(Payments::find()->all(), 'id', 'name'), ['prompt' => '--Выбрать--']) ?>
+    </div>
 
     <?= Html::submitButton('Сохранить', ['class' => "btn btn-primary"]) ?>
     <?php ActiveForm::end() ?>

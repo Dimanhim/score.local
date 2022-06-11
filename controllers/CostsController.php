@@ -2,6 +2,7 @@
 
 namespace app\controllers;
 
+use app\models\Payments;
 use Yii;
 use yii\filters\AccessControl;
 use yii\web\Controller;
@@ -140,6 +141,11 @@ class CostsController extends Controller
             }
             else {
                 $model->costs_default = 0;
+            }
+            if($model->obligstory_payments) {
+                $payment = Payments::findOne($model->obligstory_payments);
+                $payment->summa = $payment->summa - $model->cost;
+                $payment->save();
             }
 
             if($model->category_child) $model->category = $model->category_child;
