@@ -2,6 +2,7 @@
 
 namespace app\controllers;
 
+use app\models\IncomesSearch;
 use app\models\Settings;
 use Yii;
 use yii\filters\AccessControl;
@@ -78,9 +79,18 @@ class IncomesController extends Controller
      */
 
 
-    //------------------------------------- РАСХОДЫ
+    //------------------------------------- ДОХОДЫ
     public function actionIndex()
     {
+        $searchModel = new IncomesSearch();
+        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+        return $this->render('index', [
+            'searchModel' => $searchModel,
+            'dataProvider' => $dataProvider,
+        ]);
+
+
+
         $set = new Settings();
         $model = Incomes::find()->where(['>=', 'date', $set->beginDate])->andWhere(['<', 'date', $set->endDate])->orderBy('date DESC');
 

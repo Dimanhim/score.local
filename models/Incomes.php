@@ -14,6 +14,18 @@ class Incomes extends ActiveRecord
             [['id', 'category', 'income_default', 'score', 'date'], 'integer'],
         ];
     }
+    public function attributes()
+    {
+        return [
+            'id',
+            'name',
+            'income',
+            'income_default',
+            'category',
+            'score',
+            'date',
+        ];
+    }
     public function attributeLabels()
     {
         return [
@@ -40,13 +52,20 @@ class Incomes extends ActiveRecord
         }
         return $price;
     }
-    public function getIncomes() {
+    public function getIncomesFull() {
         $set = new Settings();
         $price = 0;
         foreach(self::find()->where(['>=', 'date', $set->beginDate])->andWhere(['<', 'date', $set->endDate])->all() as $cost) {
             $price = $price + $cost->income;
         }
         return $price;
+    }
+    public static function getTotal($dataProvider, $fieldName){
+        $total = 0;
+        foreach ($dataProvider as $item){
+            $total += $item[$fieldName];
+        }
+        return $total;
     }
 }
 

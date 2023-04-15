@@ -10,6 +10,7 @@ use yii\captcha\Captcha;
 
 $this->title = 'Счета';
 $totalSumm = 0;
+$totalSummNal = 0;
 ?>
 <div class="scores">
     <?php if( Yii::$app->session->hasFlash('success') ): ?>
@@ -29,8 +30,11 @@ $totalSumm = 0;
             <td>
                 <?php
                     if(!$score->credit_limit) {
-                        if($score->id != 19)
+                        if($score->id != 19) {
+                            $totalSummNal += $score->summa;
                             $totalSumm += $score->summa;
+                        }
+
                     } else {
                         $totalSumm += $score->summa - $score->credit_limit;
                     }
@@ -55,6 +59,17 @@ $totalSumm = 0;
             </td>
             <td colspan="3">
                 <i>За вычетом кредитных карт и Текущего счета ВТБ</i>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <b>Итого имеется:</b>
+            </td>
+            <td>
+                <b><?= $totalSummNal ?></b>
+            </td>
+            <td colspan="3">
+                <i>За вычетом Текущего счета ВТБ</i>
             </td>
         </tr>
         <tr>

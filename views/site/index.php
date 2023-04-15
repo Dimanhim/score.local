@@ -107,7 +107,7 @@ $incomes_count = 0;
     </tr>
     <tr>
         <td><?= Costs::getCosts() ?></td>
-        <td><?= Incomes::getIncomes() ?></td>
+        <td><?= Incomes::getIncomesFull() ?></td>
     </tr>
 
 </table>

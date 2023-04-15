@@ -44,11 +44,11 @@ class Scores extends ActiveRecord
         $summa = 0;
         $scores = self::find()->all();
         foreach($scores as $score) {
-            if($score->is_check ==1) {
-                $summa = $summa + $score->summa;
-            }
             if($score->credit_limit) {
-                $summa = $summa - ($score->credit_limit - $score->summa);
+                $summa -= ($score->credit_limit - $score->summa);
+            }
+            elseif($score->is_check ==1) {
+                $summa += $score->summa;
             }
         }
         $summa = Scores::getActualMoney($summa);
